@@ -4,6 +4,7 @@ def load_dataset(filename, skiprows, usecols):
     data = pd.read_csv(filename,skiprows=skiprows, usecols=usecols)
     data.columns = ['col1', 'col2', 'col3', 'average']
     filtered_data = pd.DataFrame(columns=['col1', 'col2', 'col3', 'average'])
+    total = 0
     complete = 0
     for index, row in data.iterrows():
         try:
@@ -12,25 +13,24 @@ def load_dataset(filename, skiprows, usecols):
             if (max_value - min_value >= 2):
                 filtered_data = filtered_data.append({'col1':int(row['col1']), 'col2':int(row['col2']), 'col3':int(row['col3']), 'average':float(row['average'])},ignore_index=True)
                 complete = complete + 1
+            total = total + 1
         except ValueError:
             pass
-    return (filtered_data, complete)
+    return (filtered_data, total, complete)
 
 def mean_in_triplet(data, col1, col2, col3, average):
-    total = 0
     contains_mean = 0
     for index, row in data.iterrows():
         list_values = (int(row[col1]), int(row[col2]), int(row[col3]))
         mean = int(round(int(row[average])))
         if (mean in list_values):
             contains_mean += 1
-        total+=1
-    return (total, contains_mean)
+    return contains_mean
 
 def run(file_location, skiprows, usecols):
-    (data, complete) = load_dataset(file_location, skiprows, usecols)
+    (data, total, complete) = load_dataset(file_location, skiprows, usecols)
     data.columns = ['col1','col2','col3','average']
-    (total, contains_mean) = mean_in_triplet(data, 'col1', 'col2','col3', 'average')
+    contains_mean = mean_in_triplet(data, 'col1', 'col2','col3', 'average')
     return (complete, total, contains_mean)
 
 if __name__ == "__main__":
