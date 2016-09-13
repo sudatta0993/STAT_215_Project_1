@@ -31,7 +31,7 @@ def manual_chi_sq(f_obs):
 	return chi2
 
 def run(filelocation, skiprows, usecols):
-	(data, complete) = load_dataset(filelocation, skiprows, usecols)
+	(data, total, complete) = load_dataset(filelocation, skiprows, usecols)
 	f_obs = chi_sq_data(data)
 
 	# Calculate chi sq statistic via two methods + p-value using Python function
