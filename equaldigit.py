@@ -44,9 +44,14 @@ if __name__ == "__main__":
                 ["Coul 1", "Coul 2", "Coul 3"])
     (outside2Total, outside2Equal) = equal_digit('./data/OSF_Storage/Outside Lab 2.Coulter Counts.6.6.08-7.7.08.csv', 1,
                ["Count 1", "Count 2", "Count 3"])
-    (outside3Total, outside3Equal) = equal_digit('./data/OSF_Storage/Outside Lab 3.Colony Counts.2.4.10-5.21.12.csv', 1, ["c1", "c2", "c3"])
 
     print("RTS coulter (equal, total) = ", RTSequal, RTStotal)
-    print("Others coulter (equal, total) = ", otherEqual + outside2Equal + outside3Equal, otherTotal + outside2Total + outside3Total)
+    print("Others coulter (equal, total) = ", otherEqual + outside2Equal, otherTotal + outside2Total)
+    print("Other investigator in lab (equal, total) = ", otherEqual, otherTotal)
+    print("Outside lab 2 (equal, total) = ", outside2Equal, outside2Total)
+
     print ('equal digit percentage of RTS coulter = ', RTSequal / (RTStotal * 1.0))
-    print ('equal digit percentage of others coulter = ', (otherEqual + outside2Equal + outside3Equal) / ((otherTotal + outside2Total + outside3Total) * 1.0))
+    print ('equal digit percentage of others coulter = ', (otherEqual + outside2Equal) / ((otherTotal + outside2Total) * 1.0))
+    print ('equal digit percentage of other investigator in lab = ', otherEqual/(otherTotal*1.0))
+    print ('equal digit percentage of outside lab2 = ', outside2Equal/(outside2Total*1.0))
+
