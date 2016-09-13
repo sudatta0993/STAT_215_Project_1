@@ -43,20 +43,20 @@ def equal_digit(filename, skiprows, usecols):
 
 if __name__ == "__main__":
 
-    (RTStotal, RTSequal) = equal_digit('./data/OSF_Storage/Bishayee Coulter Counts.10.20.97-7.16.01.csv', 1,
+    (RTSgreater, RTSequal) = equal_digit('./data/OSF_Storage/Bishayee Coulter Counts.10.20.97-7.16.01.csv', 1,
                ["Count 1", "Count 2", "Count 3"])
-    (otherTotal, otherEqual) = equal_digit('./data/OSF_Storage/Other Investigators in Lab.Coulter Counts.4.15.92-5.21.05.csv', 1,
+    (otherGreater, otherEqual) = equal_digit('./data/OSF_Storage/Other Investigators in Lab.Coulter Counts.4.15.92-5.21.05.csv', 1,
                 ["Coul 1", "Coul 2", "Coul 3"])
-    (outside2Total, outside2Equal) = equal_digit('./data/OSF_Storage/Outside Lab 2.Coulter Counts.6.6.08-7.7.08.csv', 1,
+    (outside2Greater, outside2Equal) = equal_digit('./data/OSF_Storage/Outside Lab 2.Coulter Counts.6.6.08-7.7.08.csv', 1,
                ["Count 1", "Count 2", "Count 3"])
 
-    print("RTS coulter (equal, total) = ", RTSequal, RTStotal)
-    print("Others coulter (equal, total) = ", otherEqual + outside2Equal, otherTotal + outside2Total)
-    print("Other investigator in lab (equal, total) = ", otherEqual, otherTotal)
-    print("Outside lab 2 (equal, total) = ", outside2Equal, outside2Total)
+    print("RTS coulter (equal, total) = ", RTSequal, RTSgreater)
+    print("Others coulter (equal, total) = ", otherEqual + outside2Equal, otherGreater + outside2Greater)
+    print("Other investigator in lab (equal, total) = ", otherEqual, otherGreater)
+    print("Outside lab 2 (equal, total) = ", outside2Equal, outside2Greater)
 
-    print ('equal digit percentage of RTS coulter = ', RTSequal / (RTStotal * 1.0))
-    print ('equal digit percentage of others coulter = ', (otherEqual + outside2Equal) / ((otherTotal + outside2Total) * 1.0))
-    print ('equal digit percentage of other investigator in lab = ', otherEqual/(otherTotal*1.0))
-    print ('equal digit percentage of outside lab2 = ', outside2Equal/(outside2Total*1.0))
+    print ('equal digit percentage of RTS coulter = ', RTSequal / (RTSgreater * 1.0))
+    print ('equal digit percentage of others coulter = ', (otherEqual + outside2Equal) / ((otherGreater + outside2Greater) * 1.0))
+    print ('equal digit percentage of other investigator in lab = ', otherEqual / (otherGreater * 1.0))
+    print ('equal digit percentage of outside lab2 = ', outside2Equal / (outside2Greater * 1.0))
 
