@@ -44,6 +44,6 @@ if __name__ == "__main__":
 	print ("RTS coulter (Manual Chi Sq, Chi Sq, p-value, f_obs) = ", run('./data/OSF_Storage/Bishayee Coulter Counts.10.20.97-7.16.01.csv', 1, ["Count 1", "Count 2", "Count 3", "Average"]))
 	print ("Others colony (Manual Chi Sq, Chi Sq, p-value, f_obs) = ", run('./data/OSF_Storage/Other Investigators in Lab.Colony Counts.4.23.92-11.27.02.csv',1,["col1","col2","col3","average"]))
 	print ("Others coulter (Manual Chi Sq, Chi Sq, p-value, f_obs) = ", run('./data/OSF_Storage/Other Investigators in Lab.Coulter Counts.4.15.92-5.21.05.csv',1,["Coul 1","Coul 2","Coul 3","Average"]))
-	print ("Outside lab 1 colony (Manual Chi Sq, Chi Sq, p-value, f_obs) = ", run('./data/OSF_Storage/Outside Lab 1.Coulter Counts.6.7.91-4.9.99.csv',0,[1,2,3,4]))
+	print ("Outside lab 1 coulter (Manual Chi Sq, Chi Sq, p-value, f_obs) = ", run('./data/OSF_Storage/Outside Lab 1.Coulter Counts.6.7.91-4.9.99.csv',0,[1,2,3,4]))
 	print ("Outside lab 2 coulter (Manual Chi Sq, Chi Sq, p-value, f_obs) = ", run('./data/OSF_Storage/Outside Lab 2.Coulter Counts.6.6.08-7.7.08.csv',1,["Count 1", "Count 2", "Count 3", "Average"]))
-	print ("Outside lab 3 coulter (Manual Chi Sq, Chi Sq, p-value, f_obs) = ", run('./data/OSF_Storage/Outside Lab 3.Colony Counts.2.4.10-5.21.12.csv',1,["c1", "c2", "c3", "average"]))
+	print ("Outside lab 3 colony (Manual Chi Sq, Chi Sq, p-value, f_obs) = ", run('./data/OSF_Storage/Outside Lab 3.Colony Counts.2.4.10-5.21.12.csv',1,["c1", "c2", "c3", "average"]))
