@@ -1,4 +1,5 @@
 import pandas as pd
+from scipy.stats import binom
 
 def load_data(filename, skiprows, usecols):
     data = pd.read_csv(filename, skiprows=skiprows, usecols=usecols)
@@ -49,16 +50,35 @@ if __name__ == "__main__":
                 ["Coul 1", "Coul 2", "Coul 3"])
     (outside2Greater, outside2Equal) = equal_digit('./data/OSF_Storage/Outside Lab 2.Coulter Counts.6.6.08-7.7.08.csv', 1,
                ["Count 1", "Count 2", "Count 3"])
-    (outside2Greater, outside2Equal) = equal_digit('./data/OSF_Storage/Outside Lab 2.Coulter Counts.6.6.08-7.7.08.csv',
-                                                   1,  ["Count 1", "Count 2", "Count 3"])
+    (outside1Greater, outside1Equal) = equal_digit('./data/OSF_Storage/Outside Lab 1.Coulter Counts.6.7.91-4.9.99.csv', 0, [1, 2, 3])
 
     print("RTS coulter (equal, total) = ", RTSequal, RTSgreater)
-    print("Others coulter (equal, total) = ", otherEqual + outside2Equal, otherGreater + outside2Greater)
+    print("Others coulter (equal, total) = ", otherEqual + outside2Equal + outside1Equal, otherGreater + outside2Greater + outside1Greater)
     print("Other investigator in lab (equal, total) = ", otherEqual, otherGreater)
+    print("Outside lab 1 (equal, total) = ", outside1Greater, outside1Equal)
     print("Outside lab 2 (equal, total) = ", outside2Equal, outside2Greater)
+    print("\n")
+
 
     print ('equal digit percentage of RTS coulter = ', RTSequal / (RTSgreater * 1.0))
-    print ('equal digit percentage of others coulter = ', (otherEqual + outside2Equal) / ((otherGreater + outside2Greater) * 1.0))
+    print ('equal digit percentage of others coulter = ', (otherEqual + outside2Equal + outside1Equal) / ((otherGreater + outside2Greater + outside1Greater) * 1.0))
     print ('equal digit percentage of other investigator in lab = ', otherEqual / (otherGreater * 1.0))
+    print ('equal digit percentage of outside lab1 = ', outside1Equal / (outside1Greater * 1.0))
     print ('equal digit percentage of outside lab2 = ', outside2Equal / (outside2Greater * 1.0))
+    print("\n")
+
+
+    print ('probability of number of equal digits greater than the boundary of RTS coulter is', 1 - binom.cdf(RTSequal, RTSgreater, 0.1) + binom.pmf(RTSequal, RTSgreater, 0.1))
+    print ('probability of number of equal digits greater than the boundary of other coulter is',
+           binom.cdf(otherEqual + outside2Equal + outside1Equal, otherGreater + outside2Greater + outside1Greater, 0.1))
+    print ('probability of number of equal digits greater than the boundary of other investigator in lab is',
+           1 - binom.cdf(otherEqual, otherGreater, 0.1))
+    print ('probability of number of equal digits less than the boundary of outside lab1 is',
+           binom.cdf(outside1Equal, outside1Greater, 0.1))
+    print ('probability of number of equal digits less than the boundary of outside lab2 is',
+           binom.cdf(outside2Equal, outside2Greater, 0.1))
+    print("\n")
+
+    print ('probability of number of equal digits greater than the boundary of the RTS coulter in the paper is', 1 - binom.cdf(635, 5155, 0.1))
+    print ('probability of number of equal digits greater than the boundary of the other investigator coulter in the paper is',  binom.cdf(291, 2942, 0.1))
 
