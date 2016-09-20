@@ -19,16 +19,21 @@ def uniformity(data):
 	return ran_poi_vect
 
 def run(filelocation, skiprows, usecols):
-	(data, total, complete) = load_dataset(filelocation, skiprows, usecols)
-	ran_poi_vect = uniformity(data)
-	f_obs_test = term_digit_freq(ran_poi_vect)
-	
-	# plot histogram
-	plt.figure(figsize = (8,6))
-	plt.hist(f_obs_test, bins = np.arange(11))
-	plt.show
-	
-	return f_obs_test
+  (data, total, complete) = load_dataset(filelocation, skiprows, usecols)
+  ran_poi_vect = uniformity(data)
+  f_obs_test = term_digit_freq(ran_poi_vect)
+  print f_obs_test.shape
+  x = np.arange(10)
+  print x.shape
+  # plot histogram
+  plt.figure(figsize = (8,6))
+  plt.hist(x, weights = f_obs_test, bins = np.arange(11))
+  plt.title("Test of Uniformity of Terminal Digit Distribution")
+  plt.xlabel("Terminal Digit")
+  plt.ylabel("Digit Counts")
+  plt.show()
+
+  return f_obs_test
 
 if __name__ == "__main__":
 	print ("RTS colony (f_obs_test) = ", run('./data/OSF_Storage/Bishayee Colony Counts 10.27.97-3.8.01.csv', 2, ["col1","col2","col3","average"]))
