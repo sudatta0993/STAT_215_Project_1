@@ -49,6 +49,8 @@ if __name__ == "__main__":
                 ["Coul 1", "Coul 2", "Coul 3"])
     (outside2Greater, outside2Equal) = equal_digit('./data/OSF_Storage/Outside Lab 2.Coulter Counts.6.6.08-7.7.08.csv', 1,
                ["Count 1", "Count 2", "Count 3"])
+    (outside2Greater, outside2Equal) = equal_digit('./data/OSF_Storage/Outside Lab 2.Coulter Counts.6.6.08-7.7.08.csv',
+                                                   1,  ["Count 1", "Count 2", "Count 3"])
 
     print("RTS coulter (equal, total) = ", RTSequal, RTSgreater)
     print("Others coulter (equal, total) = ", otherEqual + outside2Equal, otherGreater + outside2Greater)
