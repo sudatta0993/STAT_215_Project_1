@@ -26,10 +26,11 @@ def run(filelocation, skiprows, usecols):
   
   # plot histogram
   plt.figure(figsize = (8,6))
-  plt.hist(x, weights = f_obs_test, bins = np.arange(11))
+  plt.hist(x, weights = f_obs_test, bins = np.arange(11), alpha = 0.5)
   plt.title("Test of Uniformity of Terminal Digit Distribution")
   plt.xlabel("Terminal Digit")
   plt.ylabel("Digit Counts")
+  plt.grid(True)
   plt.show()
   
   chi2, p = scipy.stats.chisquare(f_obs_test)
