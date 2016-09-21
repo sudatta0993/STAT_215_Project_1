@@ -1,5 +1,6 @@
 from summary_stat import load_dataset, mean_in_triplet
 from ChiSq import run2
+from equaldigit import equal_digit
 import pandas as pd
 import numpy as np
 
@@ -46,3 +47,8 @@ if __name__ == '__main__':
                       ('./data/OSF_Storage/Outside Lab 3.Colony Counts.2.4.10-5.21.12.csv',1,["c1", "c2", "c3", "average"]))
     list_of_names = ("RTS Colony", "RTS Coulter", "Others Colony", "Others Coulter", "Outside Lab 1 Coulter", "Outside Lab 2 Coulter", "Outside Lab 3 Colony")
     run(list_of_inputs, list_of_names)
+    for i in list_of_inputs
+      (total_3digit, equal) = equal_digit(*i)
+      name = list_of_names[i]
+      print (name,'equal digit percentage  = ', total_3digit / (equal * 1.0))
+      print (name,'probability of number of equal digits greater than observed is', 1 - binom.cdf(equal, total_3digit, 0.1) + binom.pmf(equal, total_3digit, 0.1))
