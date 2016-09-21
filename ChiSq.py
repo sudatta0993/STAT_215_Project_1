@@ -42,13 +42,7 @@ def manual_chi_sq(f_obs):
 
 def run(filelocation, skiprows, usecols):
     (data, total, complete) = load_dataset(filelocation, skiprows, usecols)
-    vec_data = clean_data(data)
-    f_obs = term_digit_freq(vec_data)
-    tot = sum(f_obs)
-
-    # Calculate chi sq statistic via two methods + p-value using Python function
-    manual_chi2 = manual_chi_sq(f_obs)
-    chi2, p = scipy.stats.chisquare(f_obs)
+    (manual_chi2, chi2, p, f_obs, tot) = run2(data)
     return (manual_chi2, chi2, p, f_obs, tot)
 
 def run2(group):
@@ -57,7 +51,7 @@ def run2(group):
     tot_by_inv = sum(f_obs_by_inv)
     manual_chi2_by_inv = manual_chi_sq(f_obs_by_inv)
     chi2_by_inv, p_by_inv = scipy.stats.chisquare(f_obs_by_inv)
-    return (manual_chi2_by_inv, chi2_by_inv, p_by_inv, f_obs_by_inv)
+    return (manual_chi2_by_inv, chi2_by_inv, p_by_inv, f_obs_by_inv, tot_by_inv)
 
 if __name__ == "__main__":
     print ("RTS colony (Manual Chi Sq, Chi Sq, p-value, f_obs, tot) = ", run('./data/OSF_Storage/Bishayee Colony Counts 10.27.97-3.8.01.csv', 2, ["col1","col2","col3","average"]))
