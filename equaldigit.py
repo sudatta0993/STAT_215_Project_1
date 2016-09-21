@@ -70,15 +70,15 @@ if __name__ == "__main__":
 
     print ('probability of number of equal digits greater than the boundary of RTS coulter is', 1 - binom.cdf(RTSequal, RTSgreater, 0.1) + binom.pmf(RTSequal, RTSgreater, 0.1))
     print ('probability of number of equal digits greater than the boundary of other coulter is',
-           binom.cdf(otherEqual + outside2Equal + outside1Equal, otherGreater + outside2Greater + outside1Greater, 0.1))
+           1 - binom.cdf(otherEqual + outside2Equal + outside1Equal - 1, otherGreater + outside2Greater + outside1Greater, 0.1))
     print ('probability of number of equal digits greater than the boundary of other investigator in lab is',
-           1 - binom.cdf(otherEqual, otherGreater, 0.1))
+           1 - binom.cdf(otherEqual - 1, otherGreater, 0.1))
     print ('probability of number of equal digits less than the boundary of outside lab1 is',
-           binom.cdf(outside1Equal, outside1Greater, 0.1))
+           1 - binom.cdf(outside1Equal - 1, outside1Greater, 0.1))
     print ('probability of number of equal digits less than the boundary of outside lab2 is',
-           binom.cdf(outside2Equal, outside2Greater, 0.1))
+           1 - binom.cdf(outside2Equal - 1, outside2Greater, 0.1))
     print("\n")
 
     print ('probability of number of equal digits greater than the boundary of the RTS coulter in the paper is', 1 - binom.cdf(635, 5155, 0.1))
-    print ('probability of number of equal digits greater than the boundary of the other investigator coulter in the paper is',  binom.cdf(291, 2942, 0.1))
+    print ('probability of number of equal digits greater than the boundary of the other investigator coulter in the paper is',  1 - binom.cdf(290, 2942, 0.1))
 
