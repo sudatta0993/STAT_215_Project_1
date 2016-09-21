@@ -10,6 +10,7 @@ from summary_stat import load_dataset
 from ChiSq import terminal_digit
 from ChiSq import term_digit_freq
 
+np.random.seed(0)
 # Define function to test uniformity assumption
 def uniformity(data):
 	means = data['average'] # Use means as lambda values, as per author assumptions
