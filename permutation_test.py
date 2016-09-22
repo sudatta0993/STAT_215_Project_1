@@ -1,6 +1,7 @@
 from summary_stat import load_dataset, mean_in_triplet
 from ChiSq import run2
 from equaldigit import equal_digit_from_data
+from Contains_mean import run_from_data
 import pandas as pd
 import numpy as np
 from scipy.stats import binom
@@ -29,8 +30,11 @@ def run_tests(list_of_sampled_data, list_of_names):
     for i in range(len(list_of_sampled_data)):
         sampled_data = list_of_sampled_data[i]
         mean_in_triplet_sample_data = mean_in_triplet(sampled_data,'col1','col2','col3','average')
-        (manual_chi2, chi2, p, f_obs, tot) = run2(sampled_data)
+        (p_value, no_mean, no_expected, Sd, z, p_value_for_normal) = run_from_data(sampled_data)
         name = list_of_names[i]
+        print (name + " contains mean test (p_value, no_mean, no_expected, Sd, z, p_value_for_normal)",
+               p_value, no_mean, no_expected, Sd, z, p_value_for_normal)
+        (manual_chi2, chi2, p, f_obs, tot) = run2(sampled_data)
         if "Coulter" in name:
             (greater, equal) = equal_digit_from_data(list_of_sampled_data[i])
             print(name, "(Mean in triplet, manual_chi_sq, chi_sq, p, f_obs, tot, "
