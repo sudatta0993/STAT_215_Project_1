@@ -21,6 +21,10 @@ def load_data(filename, skiprows, usecols):
 
 def equal_digit(filename, skiprows, usecols):
     (data, complete, total) = load_data(filename, skiprows, usecols)
+    (greater, equal) = equal_digit_from_data(data)
+    return (greater, equal)
+
+def equal_digit_from_data(data):
     greater = 0
     equal = 0
     for index, row in data.iterrows():
@@ -40,7 +44,6 @@ def equal_digit(filename, skiprows, usecols):
             if digit_list[len(digit_list) - 1] == digit_list[len(digit_list) - 2]:
                 equal = equal + 1
     return greater, equal
-
 
 if __name__ == "__main__":
 

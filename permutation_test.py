@@ -1,6 +1,7 @@
 from summary_stat import load_dataset, mean_in_triplet
 from ChiSq import run2
-from equaldigit import equal_digit
+from equaldigit import equal_digit_from_data
+from Contains_mean import run_from_data
 import pandas as pd
 import numpy as np
 from scipy.stats import binom
@@ -24,50 +25,31 @@ def sample_data(list_of_sizes, combined_data):
         sum = sum + i
         list_of_sampled_data.append(df)
     return list_of_sampled_data
-
-def run_equal_digit_test(list_of_sampled_data, list_of_names):
-    for i in range(len(list_of_sampled_data)):
-      greater = 0
-      equal = 0
-      data = list_of_sampled_data[i]
-      name = list_of_names[i]
-      for index, row in data.iterrows():
-        if row['col1'] >= 100:
-            greater = greater + 1
-            digit_list = list(str(int(row['col1'])))
-            if digit_list[len(digit_list) - 1] == digit_list[len(digit_list) - 2]:
-                equal = equal + 1
-        if row['col2'] >= 100:
-            greater = greater + 1
-            digit_list = list(str(int(row['col2'])))
-            if digit_list[len(digit_list) - 1] == digit_list[len(digit_list) - 2]:
-                equal = equal + 1
-        if row['col3'] >= 100:
-            greater = greater + 1
-            digit_list = list(str(int(row['col3'])))
-            if digit_list[len(digit_list) - 1] == digit_list[len(digit_list) - 2]:
-                equal = equal + 1
-      print (name,'equal digit percentage  = ', greater / (equal * 1.0))
-      print (name,'probability of number of equal digits greater than observed is', 1 - binom.cdf(equal, greater, 0.1) + binom.pmf(equal, greater, 0.1))
     
 def run_tests(list_of_sampled_data, list_of_names):
     for i in range(len(list_of_sampled_data)):
         sampled_data = list_of_sampled_data[i]
         mean_in_triplet_sample_data = mean_in_triplet(sampled_data,'col1','col2','col3','average')
-        (manual_chi2, chi2, p, f_obs, tot) = run2(sampled_data)
+        (p_value, no_mean, no_expected, Sd, z, p_value_for_normal) = run_from_data(sampled_data)
         name = list_of_names[i]
-        print(name, "(Mean in triplet, manual_chi_sq, chi_sq, p, f_obs, tot)", mean_in_triplet_sample_data, manual_chi2, chi2, p, f_obs, tot)
+        print (name + " contains mean test (p_value, no_mean, no_expected, Sd, z, p_value_for_normal)",
+               p_value, no_mean, no_expected, Sd, z, p_value_for_normal)
+        (manual_chi2, chi2, p, f_obs, tot) = run2(sampled_data)
+        if "Coulter" in name:
+            (greater, equal) = equal_digit_from_data(list_of_sampled_data[i])
+            print(name, "(Mean in triplet, manual_chi_sq, chi_sq, p, f_obs, tot, "
+                        "equal digit percentage, probability of equal digits greater than observed)"
+                  , mean_in_triplet_sample_data, manual_chi2, chi2, p, f_obs, tot, greater / (equal * 1.0),
+                  1 - binom.cdf(equal, greater, 0.1) + binom.pmf(equal, greater, 0.1))
+        else:
+            print(name, "(Mean in triplet, manual_chi_sq, chi_sq, p, f_obs, tot)"
+                  , mean_in_triplet_sample_data, manual_chi2, chi2, p, f_obs, tot)
 
 def run(list_of_inputs, list_of_names):
     (combined_data, list_of_sizes) = load_all_data(list_of_inputs)
     list_of_sampled_data = sample_data(list_of_sizes, combined_data)
     run_tests(list_of_sampled_data, list_of_names)
 
-def run_eq_digit(list_of_inputs, list_of_names):
-    (combined_data, list_of_sizes) = load_all_data(list_of_inputs)
-    list_of_sampled_data = sample_data(list_of_sizes, combined_data)
-    run_equal_digit_test(list_of_sampled_data, list_of_names)
-    
 if __name__ == '__main__':
     list_of_inputs = (('./data/OSF_Storage/Bishayee Colony Counts 10.27.97-3.8.01.csv', 2, ["col1","col2","col3","average"]),
                       ('./data/OSF_Storage/Bishayee Coulter Counts.10.20.97-7.16.01.csv', 1,["Count 1", "Count 2", "Count 3", "Average"]),
@@ -78,10 +60,3 @@ if __name__ == '__main__':
                       ('./data/OSF_Storage/Outside Lab 3.Colony Counts.2.4.10-5.21.12.csv',1,["c1", "c2", "c3", "average"]))
     list_of_names = ("RTS Colony", "RTS Coulter", "Others Colony", "Others Coulter", "Outside Lab 1 Coulter", "Outside Lab 2 Coulter", "Outside Lab 3 Colony")
     run(list_of_inputs, list_of_names)
-    
-    list_eqdig_inputs =(('./data/OSF_Storage/Bishayee Coulter Counts.10.20.97-7.16.01.csv', 1,["Count 1", "Count 2", "Count 3", "Average"]),
-                        ('./data/OSF_Storage/Other Investigators in Lab.Coulter Counts.4.15.92-5.21.05.csv',1,["Coul 1","Coul 2","Coul 3","Average"]),
-                        ('./data/OSF_Storage/Outside Lab 1.Coulter Counts.6.7.91-4.9.99.csv',0,[1,2,3,4]),
-                        ('./data/OSF_Storage/Outside Lab 2.Coulter Counts.6.6.08-7.7.08.csv',1,["Count 1", "Count 2", "Count 3", "Average"]))
-    eq_dig_names = ("RTS Coulter", "Other Coulter", "Outside Lab 1 Coulter", "Outside Lab 2 Coulter")
-    run_eq_digit(list_eqdig_inputs, eq_dig_names)

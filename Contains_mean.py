@@ -1,5 +1,4 @@
 import math
-from scipy.stats import poisson
 from scipy.stats import binom
 from scipy.stats import norm
 import numpy as np
@@ -7,35 +6,8 @@ import pandas as pd
 from summary_stat import load_dataset
 from summary_stat import mean_in_triplet
 
-# Define a function to compute the probability when a triplet contains its mean for lambda, and the result will be stored
-# in the vector probs.
-def prob(probs):
-    for i in range(2081):
-        if i < 2001:
-            lam = i
-        else:
-            lam = 100 * (i - 2000) + 2000
-        n = poisson.ppf(1 - math.pow(10, -9), lam)
-        n = n.astype(int)
-        sum = 0
-        tempar = np.array([0.0] * (n + 1)) # use an array to store the pmf of poisson(lambda)
-        tempar[lam] = poisson.pmf(lam, lam) # start with the peak p(X = lambda)
-        tempar[0] = poisson.pmf(0, lam)
-        for i1 in range(lam - 1, 0, -1):
-            tempar[i1] = tempar[i1 + 1] * (float(i1 + 1) / float(lam)) # Compute p(X = lambda') where lambda' < lambda
-        for i2 in range(lam + 1, n + 1):
-            tempar[i2] = tempar[i2 - 1] * (float(lam) / float(i2)) # Compute p(X = lambda') where lambda' < lambda
-        for j in range(2, n + 1):
-            odd = int(j % 2 == 1)
-            for k in range(j, n + 1):
-                sum += 6 * tempar[k - j] * (tempar[k - int(j / 2)] + odd * tempar[k - int(j / 2) - 1]) * tempar[k]
-        probs[i] = sum
-    return probs
-
 # Compute the table of probability when lambda = 0, 1, 2, ..., 2000
-probs_lambda = np.array([0.0] * 2081)
-probs_lambda = prob(probs_lambda)
-
+probs_lambda = np.genfromtxt('./data/probs_lambda.csv')
 
 # Given a list of unequal probs for independent Bernoulli r.v., it'll return the cdf P(X <= x). This algorithm is based on the recursion scheme of coefficients of the
 # moment generating function
@@ -63,7 +35,10 @@ def poibin(probs, x):
 
 def run(file_location, skiprows, usecols, probs_lambda):
     (data, total, complete) = load_dataset(file_location, skiprows, usecols)
-    data.columns = ['col1', 'col2', 'col3', 'average']
+    (p_value, no_mean, no_expected, Sd, z, p_value_for_normal) = run_from_data(data)
+    return (p_value, no_mean, no_expected, Sd, z, p_value_for_normal)
+
+def run_from_data(data):
     # Rounded mean for each triplet
     mean = np.round(pd.np.array(data['average']).astype(np.double))
     # Throw the big lambda (when it is greater than 10000)
@@ -78,7 +53,7 @@ def run(file_location, skiprows, usecols, probs_lambda):
         else:
             rounded_mean = int(round(rounded_mean / 100.0) * 100)
             index = int(2000 + (rounded_mean - 2000) / 100)
-        probs[i] = float(probs_lambda[index])
+        probs[i] = float(probs_lambda[min(index, len(probs_lambda) - 1)])
     # Compute # mean contained in triplet
     no_mean = mean_in_triplet(data, 'col1', 'col2', 'col3', 'average')
     # Actual p value
@@ -92,10 +67,10 @@ def run(file_location, skiprows, usecols, probs_lambda):
     # Normal estimation of p_values
     p_value_for_normal = 1 - norm.cdf(z)
     return (p_value, no_mean, no_expected, Sd, z, p_value_for_normal)
+
 # Compute the upper bound for p-value
 def run_1(file_location, skiprows, usecols, probs_lambda):
     (data, total, complete) = load_dataset(file_location, skiprows, usecols)
-    data.columns = ['col1', 'col2', 'col3', 'average']
     mean = mean_in_triplet(data, 'col1', 'col2', 'col3', 'average')
     p = max(probs_lambda)
     return binom.sf(mean - 1, complete, p)
