@@ -31,6 +31,9 @@ def poibin(probs, x):
                 a[i][j] = a[i - 1][j - 1] * probs[i - 1] + a[i - 1][j] * q[i - 1]
     pdf = a[n, :]
     cdf = np.cumsum(pdf)
+    epsilon = 10**-15 # Define epsilon to deal with float point calc errors
+    if 1 - cdf[x] <= epsilon:
+      cdf[x] = 1
     return cdf[x]
 
 def run(file_location, skiprows, usecols, probs_lambda):
@@ -58,6 +61,8 @@ def run_from_data(data):
     no_mean = mean_in_triplet(data, 'col1', 'col2', 'col3', 'average')
     # Actual p value
     p_value = 1 - poibin(probs, no_mean - 1)
+    print (poibin(probs,no_mean-1))
+    print (1 - poibin(probs, no_mean - 1))
     # Expected # mean contained in triplet
     no_expected = np.sum(probs)
     # Standard deviation
