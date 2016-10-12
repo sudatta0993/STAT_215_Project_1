@@ -6,7 +6,7 @@ import pandas as pd
 import numpy as np
 from scipy.stats import binom
 
-np.random.seed(0)
+np.random.seed(4210163759)
 def load_all_data(list_of_inputs):
     combined_data = pd.DataFrame(columns=['col1', 'col2', 'col3', 'average'])
     list_of_sizes = []
