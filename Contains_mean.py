@@ -61,8 +61,6 @@ def run_from_data(data):
     no_mean = mean_in_triplet(data, 'col1', 'col2', 'col3', 'average')
     # Actual p value
     p_value = 1 - poibin(probs, no_mean - 1)
-    print (poibin(probs,no_mean-1))
-    print (1 - poibin(probs, no_mean - 1))
     # Expected # mean contained in triplet
     no_expected = np.sum(probs)
     # Standard deviation
